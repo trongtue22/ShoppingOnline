@@ -1,0 +1,29 @@
+require('../utils/MongooseUtil');
+const Models = require('./models');
+
+const OrderDAO = {
+  async insert(order) {
+    const mongoose = require('mongoose');
+    order._id = new mongoose.Types.ObjectId();
+    const result = await Models.Order.create(order);
+    return result;
+  },
+  // Lab-7 
+  async selectByCustID(_cid) {
+    const query = { 'customer._id': _cid };
+    const orders = await Models.Order.find(query).exec();
+    return orders;
+  },
+  // LAB-7
+  async selectAll() 
+  {
+    const query = {};
+    const mysort = { cdate: -1 }; // descending
+    const orders = await Models.Order.find(query).sort(mysort).exec();
+    return orders;
+  }, 
+  
+};
+
+
+module.exports = OrderDAO;
